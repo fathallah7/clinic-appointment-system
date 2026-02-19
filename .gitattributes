@@ -1,0 +1,9 @@
+# Exclude Admin views and components from language stats to reduce Vue percentage
+frontend/src/views/Admin/* linguist-vendored
+frontend/src/components/Admin/* linguist-vendored
+
+# Exclude assets (images, fonts, etc) if they were being counted
+frontend/src/assets/* linguist-vendored
+
+# Treat .vue files as vendored if you want to completely hide them (Use with caution)
+# *.vue linguist-vendored

@@ -1,4 +1,6 @@
 <script setup>
+import AppointmentModal from '@/components/User/AppointmentModal.vue'
+import { iconPath } from '@/utils/icons'
 import axios from 'axios'
 import { onMounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
@@ -71,18 +73,6 @@ onMounted(() => {
     if (isAuth.value) fetchMyApt()
     fetchSlots()
 })
-
-const iconPath = {
-    heart: "M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z",
-    calendar: "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z",
-    arrow: "M17 8l4 4m0 0l-4 4m4-4H3",
-    close: "M6 18L18 6M6 6l12 12",
-    shield: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
-    clock: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z",
-    star: "M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z",
-    users: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z",
-    check: "M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-}
 
 const features = [
     { icon: 'shield', title: 'Safe & Secure', desc: 'Complete Privacy' },
@@ -292,79 +282,7 @@ const features = [
         </div>
     </section>
 
-    <teleport to="body">
-        <transition name="modal">
-            <div v-if="showModal"
-                class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-md"
-                @click.self="showModal = false">
-                <div class="bg-white rounded-3xl w-full max-w-lg p-8 shadow-2xl">
-                    <div class="flex justify-between items-start mb-8">
-                        <div>
-                            <h3 class="text-3xl font-bold text-gray-900">My Appointment</h3>
-                            <p class="text-gray-500 mt-1">Manage your booking</p>
-                        </div>
-                        <button @click="showModal = false"
-                            class="w-12 h-12 hover:bg-gray-100 rounded-xl flex items-center justify-center transition group">
-                            <svg class="w-6 h-6 text-gray-400 group-hover:text-gray-600 transition" fill="none"
-                                stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    :d="iconPath.close" />
-                            </svg>
-                        </button>
-                    </div>
-
-                    <div v-if="!myApt" class="py-16 text-center">
-                        <div class="w-24 h-24 bg-gray-100 rounded-3xl flex items-center justify-center mx-auto mb-6">
-                            <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    :d="iconPath.calendar" />
-                            </svg>
-                        </div>
-                        <p class="text-gray-600 font-semibold text-lg mb-6">No appointment scheduled</p>
-                        <a href="#appointments" @click="showModal = false"
-                            class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-semibold rounded-xl hover:from-emerald-700 hover:to-teal-700 transition-all shadow-lg shadow-emerald-500/30">
-                            Book Now
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    :d="iconPath.arrow" />
-                            </svg>
-                        </a>
-                    </div>
-
-                    <div v-else class="space-y-6">
-                        <div
-                            class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-8 border-2 border-emerald-200">
-                            <div class="flex items-center gap-6 mb-6">
-                                <div
-                                    class="w-20 h-20 bg-gradient-to-br from-emerald-600 to-teal-600 rounded-2xl flex items-center justify-center shadow-xl shadow-emerald-500/30">
-                                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            :d="iconPath.calendar" />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p class="text-4xl font-bold text-gray-900">{{ myApt.slot.start_time }}</p>
-                                    <p class="text-gray-600 font-medium mt-1">{{ fmt(myApt.slot.date) }}</p>
-                                </div>
-                            </div>
-                            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-xl font-semibold"
-                                :class="myApt.status === 'confirmed' ? 'bg-emerald-200 text-emerald-800' : 'bg-red-200 text-red-800'">
-                                <svg v-if="myApt.status === 'confirmed'" class="w-5 h-5" fill="currentColor"
-                                    viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" :d="iconPath.check" clip-rule="evenodd" />
-                                </svg>
-                                {{ myApt.status === 'confirmed' ? 'Confirmed' : myApt.status }}
-                            </div>
-                        </div>
-                        <button @click="cancel"
-                            class="w-full py-4 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-red-50 hover:border-red-300 hover:text-red-700 transition-all">Cancel
-                            Appointment</button>
-                    </div>
-                </div>
-            </div>
-        </transition>
-    </teleport>
+    <AppointmentModal :show="showModal" :myApt="myApt" @close="showModal = false" @cancel="cancel" />
 
     <footer class="py-16 bg-gradient-to-b from-gray-50 to-white border-t border-gray-200">
         <div class="max-w-7xl mx-auto px-6 text-center space-y-6">
@@ -404,18 +322,5 @@ html {
     animation: float 6s ease-in-out infinite;
 }
 
-.modal-enter-active,
-.modal-leave-active {
-    transition: all 0.3s ease;
-}
 
-.modal-enter-from,
-.modal-leave-to {
-    opacity: 0;
-}
-
-.modal-enter-from>div,
-.modal-leave-to>div {
-    transform: scale(0.95) translateY(20px);
-}
 </style>
